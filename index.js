@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const productRoutes = require('./route/product');
 const categoryRoutes = require('./route/categoryRoutes');
 const dbConnection = require("./config/db");
+const inquiryRoutes = require("./route/inquiryRoutes"); ``
 
 dotenv.config();
 dbConnection();
@@ -23,6 +24,7 @@ app.get("/", (req, res) => {
 // Router
 app.use("/api/products", productRoutes);
 app.use("/api/categories", categoryRoutes);
+app.use('/api/inquiries', inquiryRoutes);
 // Start the server
-const PORT =5000;
+const PORT =5000; 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
