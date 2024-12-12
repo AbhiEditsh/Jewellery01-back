@@ -2,10 +2,8 @@ const Inquiry = require("../models/Inquiry");
 
 // POST new inquiry
 const createInquiry = async (req, res) => {
-  console.log(req);
   try {
     const { name, email, message } = req.body;
-
     const existingInquiry = await Inquiry.findOne({ name, email });
     if (existingInquiry) {
       return res

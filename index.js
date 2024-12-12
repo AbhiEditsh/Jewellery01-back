@@ -26,5 +26,5 @@ app.use("/api/products", productRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use('/api/inquiries', inquiryRoutes);
 // Start the server
-const PORT =5000; 
+const PORT =8000; 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
