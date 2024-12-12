@@ -26,7 +26,6 @@ exports.createProduct = async (req, res) => {
       image,
       imageList,
     });
-
     res.status(201).json({ success: true, product: newProduct });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
