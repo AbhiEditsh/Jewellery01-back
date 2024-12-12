@@ -16,7 +16,6 @@ exports.createProduct = async (req, res) => {
     const image = req.files?.image?.[0]?.path || null;
     const imageList = req.files?.imageList?.map((file) => file.path) || [];
 
-    // Create product with category ID and name
     const newProduct = await Product.create({
       name,
       number,
