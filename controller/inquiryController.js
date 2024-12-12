@@ -11,7 +11,7 @@ const createInquiry = async (req, res) => {
       return res
         .status(400)
         .json({
-          error: "An inquiry with the same name and email already exists.",
+          error: "This inquiry with the same name and email already exists.",
         });
     }
 
