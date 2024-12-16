@@ -7,6 +7,7 @@ const productRoutes = require("./route/product");
 const categoryRoutes = require("./route/categoryRoutes");
 const inquiryRoutes = require("./route/inquiryRoutes");
 const reviewRoutes = require("./route/review");
+const ProductinquiryRoutes=require("./route/ProductInquiry");
 
 dotenv.config();
 dbConnection();
@@ -26,6 +27,7 @@ app.use("/api/products", productRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/inquiries", inquiryRoutes);
 app.use("/api/review", reviewRoutes);
+app.use("/api/product-inquiries", ProductinquiryRoutes);
 // Start the server
 const PORT = 9000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
