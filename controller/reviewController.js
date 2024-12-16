@@ -6,10 +6,10 @@ exports.createReview = async (req, res) => {
     if (!name || !description || !rating) {
       return res.status(400).json({ message: "All fields are required" });
     }
-    const image = req.files?.clientImage?.[0]?.path || null;
+    const clientImage = req.files?.clientImage?.[0]?.path || null;
 
     const review = await Review.create({
-      clientImage: image,
+      clientImage,
       name,
       description,
       rating,
