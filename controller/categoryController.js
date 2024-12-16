@@ -29,12 +29,12 @@ exports.getCategories = async (req, res) => {
 // Delete a category by ID
 exports.deleteCategory = async (req, res) => {
   try {
-    const { categoryId } = req.params;
-    const category = await Category.findById(categoryId);
+    const { id } = req.params;
+    const category = await Category.findById(id);
     if (!category) {
       return res.status(404).json({ message: "Category not found" });
     }
-    await Category.findByIdAndDelete(categoryId);
+    await Category.findByIdAndDelete(id);
     res.status(200).json({ message: "Category deleted successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
