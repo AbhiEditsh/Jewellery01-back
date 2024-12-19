@@ -1,21 +1,16 @@
 const Product = require("../models/product");
 const Category = require("../models/categoryModel");
+
 exports.createProduct = async (req, res) => {
   try {
-    const { name, number, description, gender, category, price } = req.body;
-
-    // Fetch and validate category
+    const { name, number, description, gender, category, price, images } =
+      req.body;
     const categoryData = await Category.findById(category);
     if (!categoryData) {
       return res
         .status(400)
         .json({ success: false, message: "Invalid category ID" });
     }
-
-    // Handle image uploads
-    const image = req.files?.image?.[0]?.path || null;
-    const imageList = req.files?.imageList?.map((file) => file.path) || [];
-
     const newProduct = await Product.create({
       name,
       number,
@@ -23,16 +18,15 @@ exports.createProduct = async (req, res) => {
       gender,
       category: { id: categoryData._id, name: categoryData.name },
       price,
-      image,
-      imageList,
+      images: images,
     });
+
     res.status(201).json({ success: true, product: newProduct });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 };
 
-// Get All Products
 exports.getProducts = async (req, res) => {
   try {
     const products = await Product.find().populate("category", "name _id"); // Populate category with name and id
@@ -107,13 +101,15 @@ exports.searchProducts = async (req, res) => {
       });
     }
 
+    // Perform the search
     const products = await Product.find({
       $or: [
-        { name: { $regex: query, $options: "i" } },
-        { category: { $regex: query, $options: "i" } },
+        { name: { $regex: query, $options: "i" } }, 
+        { "category.name": { $regex: query, $options: "i" } }, // Case-insensitive search in "category.name"
       ],
-    });
+    }).exec();
 
+    // Check if products exist
     if (products.length === 0) {
       return res.status(404).json({
         success: false,
@@ -121,34 +117,40 @@ exports.searchProducts = async (req, res) => {
       });
     }
 
+    // Send the products in response
     res.status(200).json({ success: true, products });
   } catch (error) {
     console.error("Error in searchProducts:", error.message);
+
+    // Handle specific ObjectId casting errors
+    if (error.name === "CastError" && error.kind === "ObjectId") {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid query parameter format.",
+      });
+    }
+
+    // Handle other server errors
     res.status(500).json({ success: false, error: error.message });
   }
 };
 
+
 exports.getRelatedProducts = async (req, res) => {
   try {
-    // Find the product by ID
     const product = await Product.findById(req.params.id);
     if (!product) {
       return res
         .status(404)
         .json({ success: false, message: "Product not found" });
     }
-
     const relatedProducts = await Product.find({
-      "category.id": product.category.id, 
+      "category.id": product.category.id,
       _id: { $ne: product._id },
-    })
-      .limit(4); 
-
+    }).limit(4);
 
     res.status(200).json({ success: true, relatedProducts });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
 };
-
-

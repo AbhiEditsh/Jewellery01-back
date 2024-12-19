@@ -8,6 +8,7 @@ const categoryRoutes = require("./route/categoryRoutes");
 const inquiryRoutes = require("./route/inquiryRoutes");
 const reviewRoutes = require("./route/review");
 const ProductinquiryRoutes=require("./route/ProductInquiry");
+const uploadRoutes = require("./route/image");
 
 dotenv.config();
 dbConnection();
@@ -24,6 +25,7 @@ app.get("/", (req, res) => {
 
 // Router
 app.use("/api/products", productRoutes);
+app.use("/api", uploadRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/inquiries", inquiryRoutes);
 app.use("/api/review", reviewRoutes);

@@ -1,10 +1,10 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const ReviewController = require('../controller/reviewController');
-const { upload } = require('../config/multerConfig');
+const ReviewController = require("../controller/reviewController");
 
-// POST route to create a testimonial
-router.post('/', upload,ReviewController.createReview);
-router.get('/', ReviewController.getReview);
+router.post("/", ReviewController.createReview);
+router.get("/", ReviewController.getReview);
+router.delete("/:id", ReviewController.deleteReview);
+router.put("/:id", ReviewController.updateReview);
 
 module.exports = router;
